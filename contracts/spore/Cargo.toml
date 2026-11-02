@@ -13,7 +13,6 @@ spore-utils = { path = "../../lib/utils" }
 spore-errors = { path = "../../lib/errors" }
 spore-mutant = { path = "../../lib/mutant" }
 kmp = { version = "0.1.1" }
-ckb-transaction-cobuild = { git = "https://github.com/cryptape/ckb-transaction-cobuild-poc", rev = "bdb0c74" }
 
 [build-dependencies]
 ckb-hash = "0.112.1"

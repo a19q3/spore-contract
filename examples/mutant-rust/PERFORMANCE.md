@@ -1,5 +1,11 @@
 # Native Mutant performance
 
+The recorded comparison below belongs to the fixed #75 native-only snapshot,
+which still required CoBuild Actions. This combined v3 integration also removes
+that core requirement through #76. Its executable benchmark is rerun separately;
+do not treat the fixed snapshot's hashes or cycle table as the combined build.
+
+
 The current contracts execute native Rust/RISC-V Mutants only. For this small
 recipe, a single native rule uses **82.9% fewer mint-transaction VM cycles** than
 the equivalent Lua rule in the isolated comparison. Four rules use **86.9% fewer**.

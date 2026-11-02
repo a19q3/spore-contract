@@ -2317,9 +2317,11 @@ version = "0.1.0"
 dependencies = [
  "ckb-gen-types 0.111.0",
  "ckb-sdk",
+ "ckb-system-scripts",
  "ckb-testtool",
  "hex",
  "molecule 0.7.5",
+ "secp256k1",
  "serde_json",
  "spore-types",
  "spore-utils",

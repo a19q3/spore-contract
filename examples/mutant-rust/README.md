@@ -178,12 +178,10 @@ be satisfied on the new path. Its existing Spore version retains its behavior.
 A native rule receives its own identity; it does not replace a Lua rule under the
 old identity.
 
-This #75 branch still requires core CoBuild Actions for mint, transfer and burn.
-The companion [#76](https://github.com/sporeprotocol/spore-contract/pull/76)
-removes that requirement for the combined v3 candidate. After both changes,
-Actions are optional for the core, while Locks and custom rules retain their own
-witness requirements. Multipart, Cluster authority and required-Mutant checks
-still apply. Success from a rule always returns to Spore's remaining validation.
+The combined v3 candidate includes #76: CoBuild Actions are optional for the
+core on mint, transfer and burn. Locks and custom rules retain their own witness
+requirements. Multipart, Cluster authority and required-Mutant checks still
+apply. Success from a rule returns to Spore's remaining validation.
 See the [release plan](../../docs/VERSIONS.md#spore-v3--030-alpha1-unreleased);
 CKB-VM V2 and the `spore-mutant-v1` ABI are independent version labels.
 
@@ -194,7 +192,7 @@ acceptance/rejection, deterministic replay, mint/transfer/burn rejection,
 multiple native rules, explicit rejection of Lua dependencies and mixed lists,
 full-width dependency/output indices, code/type/ID
 binding, payment accumulation/overflow, cycle exhaustion, and continued Spore
-multipart, cluster, co-build and input-lock checks. `mutant_probe` is a test-only
+multipart, Cluster and input-lock checks, including optional CoBuild intent. `mutant_probe` is a test-only
 executable and has no deployment configuration. `equipment-merge.lua` is retained
 for the isolated [historical benchmark](../../benchmarks/legacy-lua/README.md),
 not as a supported rule for the new contracts. See the

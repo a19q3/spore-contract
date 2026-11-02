@@ -12,7 +12,9 @@ Its release combines native-only Rust Mutants ([#75](https://github.com/sporepro
 and optional core CoBuild intent ([#76](https://github.com/sporeprotocol/spore-contract/pull/76)).
 The PRs are separate review steps, not two independently deployable v3 releases.
 See the [version plan](./docs/VERSIONS.md#spore-v3--030-alpha1-unreleased)
-for the existing v2 naming, exact code-hash boundary, and combined verification.
+for the existing v2 naming and exact code-hash boundary.
+This combined branch includes both changes; see the [integration guide](./docs/V3_INTEGRATION.md)
+for resolutions and verification commands.
 
 ## About
 
@@ -20,6 +22,19 @@ Spore is an on-chain protocol to power digital asset ownership, distribution, an
 
 This repo contains the [Spore RFC](./docs/RFC.md), [Spore Mutant RFC](./docs/MUTANT.md), [Spore Cluster Proxy/Agent RFC](./docs/RFC_PROXY_AGENT.md), protocol types [schema definition](./lib/types/schemas/spore.mol) and [implementation](./contracts/) of Spore contracts written in Rust.
 
+
+## Optional transaction intent
+
+This source version no longer requires a CoBuild Action for Spore, Cluster,
+Cluster Proxy, or Cluster Agent operations. Their type scripts validate the
+transaction's cells directly. Locks and Mutants retain their own witness and
+execution requirements.
+
+CoBuild schemas and opt-in helpers remain available for transaction composition.
+Wallets must compare intent with the actual transaction before trusting it.
+This consensus change requires new contract code hashes and does not change
+already deployed versions. See [CoBuild decoupling](./docs/COBUILD.md) for the
+validation boundary and migration requirements.
 
 ## ⚙️ Development
 Before development, basic dependencies are required:

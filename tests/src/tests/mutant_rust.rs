@@ -308,7 +308,7 @@ fn every_native_mutant_runs_in_declared_order() {
 }
 
 #[test]
-fn successful_mutant_never_skips_cobuild_on_any_operation() {
+fn successful_mutant_allows_optional_intent_on_all_operations() {
     let mut context = Context::default();
     let rule = rule(&mut context, "mutant_equipment", b"", None);
     let mint = mint(&mut context, &[rule], &[3, 4, 7]);
@@ -319,10 +319,9 @@ fn successful_mutant_never_skips_cobuild_on_any_operation() {
     ] {
         context.verify_tx(&tx, MAX_CYCLES).unwrap();
         let missing = tx.as_advanced_builder().set_witnesses(vec![]).build();
-        assert!(
-            context.verify_tx(&missing, MAX_CYCLES).is_err(),
-            "missing co-build accepted"
-        );
+        context
+            .verify_tx(&missing, MAX_CYCLES)
+            .expect("optional intent");
     }
 }
 
@@ -664,7 +663,7 @@ fn successful_mutant_never_skips_cluster_required_mutant() {
 }
 
 #[test]
-fn native_success_does_not_bypass_input_locks_or_cobuild_fields() {
+fn native_success_preserves_input_locks_with_optional_intent() {
     let mut context = Context::default();
     let native = rule(&mut context, "mutant_equipment", b"", None);
     let tx = mint(&mut context, &[native], &[3, 4, 7]);
@@ -678,7 +677,9 @@ fn native_success_does_not_bypass_input_locks_or_cobuild_fields() {
         tx.as_advanced_builder().set_witnesses(vec![]).build(),
         &[(Some(script), action)],
     );
-    rejects(&context, &invalid, "error code 12");
+    context
+        .verify_tx(&invalid, MAX_CYCLES)
+        .expect("intent is not core authority");
     let (code, dep) = build_spore_contract_materials(&mut context, "mutant_equipment");
     let lock = build_spore_type_script(&mut context, &code, Bytes::new()).unwrap();
     let output = build_normal_output(&mut context)
@@ -714,3 +715,24 @@ fn cluster_creation_rejects_a_legacy_lua_mutant() {
 
 #[path = "mutant_performance.rs"]
 mod performance;
+
+#[test]
+fn native_rules_reject_all_operations_without_intent() {
+    for mode in [
+        b"mint".as_slice(),
+        b"transfer".as_slice(),
+        b"burn".as_slice(),
+    ] {
+        let mut context = Context::default();
+        let native = rule(&mut context, "mutant_probe", mode, None);
+        let minted = mint(&mut context, &[native], &[3, 4, 7]);
+        let tx = if mode == b"mint" {
+            minted
+        } else {
+            context.verify_tx(&minted, MAX_CYCLES).unwrap();
+            move_spore(&mut context, &minted, mode == b"burn")
+        };
+        let tx = tx.as_advanced_builder().set_witnesses(vec![]).build();
+        rejects(&context, &tx, "error code 93");
+    }
+}

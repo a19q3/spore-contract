@@ -108,7 +108,7 @@ fn native_mutant_performance_report() {
         let burn_cycles = perf_measure(&context, &burn);
         println!("PERF {label} mint={mint_cycles} transfer={transfer_cycles} burn={burn_cycles} deps={} tx_bytes={}",
             tx.cell_deps().len(), tx.data().as_slice().len());
-        // Measured transactions still enforce the recipe and co-build validation.
+        // Measured transactions still enforce the recipe; intent is optional.
         if !rules.is_empty() {
             let invalid = replace_content(&mut context, &tx, None, Some(&[3, 4, 8]));
             assert!(context.verify_tx(&invalid, PERF_LIMIT).is_err());
@@ -117,7 +117,7 @@ fn native_mutant_performance_report() {
                     &tx.as_advanced_builder().set_witnesses(vec![]).build(),
                     PERF_LIMIT
                 )
-                .is_err());
+                .is_ok());
         }
     }
 }
