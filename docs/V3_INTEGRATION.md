@@ -95,3 +95,12 @@ workflow were not run locally. That workflow checks out separate SDK/devenv
 repositories; it does not establish v3 client support or publish the required
 new client configuration. SDK/devenv integration still needs validation before
 this candidate can be treated as a release.
+
+## SDK acceptance evidence
+
+A separate SDK candidate was exercised on a real disposable local devnet and
+its exact signed bytes replayed in CKB-VM on 2026-11-03. See
+[SDK interoperability acceptance](./SDK_INTEROP.md) for the 23-case result,
+source/binary hashes, recorded fixture and limits. This test/documentation
+addition does not change the consensus logic reviewed in #75 or #76, or make
+the candidate release-ready by itself.

@@ -1,0 +1,80 @@
+{
+  "date": "2026-11-03",
+  "contracts_commit": "46eaa8b59abe818f27dcfe3c7af0da46698c12f8",
+  "sdk_base_commit": "5e5d886e49bfbd78253e9c14fd8baebccb488a81",
+  "legacy_source_commit": "9a6010e43ffd09ac9e6fe7ee389cc915e3e4f999",
+  "node": "ckb 0.200.0 (52c2be1 2025-03-05)",
+  "node_version": "22.23.1",
+  "scope": "local disposable devnet and exact-byte script replay; no contract consensus changes or public-network deployment",
+  "capture": {
+    "sdk-transactions-run2.jsonl": {
+      "bytes": 54450163,
+      "sha256": "31bfedecf99f0ce51389575a16e4ed66faab3f6bcd652759b632b591aa8d99a7"
+    },
+    "sdk-transactions-run2.jsonl.xz": {
+      "bytes": 1347724,
+      "sha256": "d2c1034591a062740d4605d179cfc0693f436392fd4bfe7ff194bf2aa42d417f"
+    }
+  },
+  "results": {
+    "offline": {
+      "passed": 12
+    },
+    "devnet": {
+      "passed": 1,
+      "transactions": 23,
+      "accepted": 12,
+      "script_rejections": 11
+    },
+    "rust_replay": {
+      "passed": 1,
+      "cases": 23,
+      "accepted": 12,
+      "rejected": 11
+    },
+    "existing_sdk_config": {
+      "passed": 5
+    }
+  },
+  "binaries": {
+    "spore_extension_rust": {
+      "bytes": 26528,
+      "sha256": "c166b1938e74bd4dc5211b17cb1ec0b4a4fe3b27f124905a8069f489135638ed",
+      "code_hash": "0x4d5eb240f129b0feb15320287f02c86e349b226fa7b468982446e43b83765bef"
+    },
+    "cluster": {
+      "bytes": 25608,
+      "sha256": "1006b38ab0f0142d94121ca38101b0071e5bdb3a3470000ae88b99a528708078",
+      "code_hash": "0x9bbfaf6660f8bdc0722065c65bc351ec01bfe34b416a7efc7ea6a5411683c8b6"
+    },
+    "cluster_proxy": {
+      "bytes": 23888,
+      "sha256": "c34ba795fa605a98412e1081ad175c8da90e57f03287b812896163c954ee664c",
+      "code_hash": "0x1ae56ddeede6a7efcf5d64b9947491af4b9bef5a810b82280609d5ff54b6c335"
+    },
+    "cluster_agent": {
+      "bytes": 27096,
+      "sha256": "ec8f1f7f40456e826c2ce184714b9c91727ff8af78addd46f8cc33f6d7038479",
+      "code_hash": "0xa6a7fdff95563e86c05d1551c3225ebfd578d6e9ab59ce92e190e9bfcb87fc44"
+    },
+    "spore": {
+      "bytes": 54080,
+      "sha256": "bbbf8aac31987f448f2f2ab3164bb5aff0d29ee296f437181a483241fc30528c",
+      "code_hash": "0x46efb37a8d6a46b34178433414eed363c53380cfd83a3ae0687f63c275410b56"
+    },
+    "mutant_equipment": {
+      "bytes": 9736,
+      "sha256": "ffa876b3b676e30e77f10a875f79de63dde4af6b5511f0b662a061fdca59bef2",
+      "code_hash": "0x3d1dca89f6a0f382b45793c1c76ce963f438ee0b382a56113eb552b4937aaaaa"
+    },
+    "mutant_probe": {
+      "bytes": 10600,
+      "sha256": "f5f4919bbfbb04e8e64c79dfd0703a4fef08c5c8aed2aae1692e6884c5646eb6",
+      "code_hash": "0x532c79cdebe4520ec42d03f23d6bd333584ac4111befa47405847c114ca9dc5c"
+    }
+  },
+  "genesis_hash": "0x71987d761ba75a8b9965a7acef9630e453593389ad0d1377df967693a4fa5db2",
+  "sdk_candidate_tree": "29ae2a72a04483ab01059f0da97f9c631df8f3d9",
+  "sdk_candidate_patch_sha256": "fdc31614cb350b20d9896a461537bc4869755cb29313c5f7d99eb62918b109e4",
+  "services": "Stopped after commitment checks; local chain database retained"
+}
