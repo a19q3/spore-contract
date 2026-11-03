@@ -7,18 +7,26 @@
   "node_version": "22.23.1",
   "scope": "local disposable devnet and exact-byte script replay; no contract consensus changes or public-network deployment",
   "capture": {
-    "sdk-transactions-run2.jsonl": {
+    "transactions.jsonl": {
       "bytes": 54450163,
-      "sha256": "31bfedecf99f0ce51389575a16e4ed66faab3f6bcd652759b632b591aa8d99a7"
+      "sha256": "2e26ed08f9169ead5dca06bd97c9a63b0f81251eb1e631995b4494950fd6f853"
     },
-    "sdk-transactions-run2.jsonl.xz": {
-      "bytes": 1347724,
-      "sha256": "d2c1034591a062740d4605d179cfc0693f436392fd4bfe7ff194bf2aa42d417f"
+    "transactions.jsonl.xz": {
+      "bytes": 1342404,
+      "sha256": "bef6b393d91abfc7af181f8d06e72f433b7e68c02d9ba000d813c5c6597ae102"
     }
   },
   "results": {
     "offline": {
-      "passed": 12
+      "passed": 56,
+      "interop": 31,
+      "existing_core": 25,
+      "node_versions": [
+        "18.20.8",
+        "22.23.1"
+      ],
+      "typechecks": true,
+      "commonjs_exports": true
     },
     "devnet": {
       "passed": 1,
@@ -34,6 +42,12 @@
     },
     "existing_sdk_config": {
       "passed": 5
+    },
+    "runner_isolation": {
+      "no_root_dependencies": "passed",
+      "existing_directory": "passed",
+      "existing_symlink": "passed",
+      "cancellation_cleanup": "passed"
     }
   },
   "binaries": {
@@ -74,7 +88,22 @@
     }
   },
   "genesis_hash": "0x71987d761ba75a8b9965a7acef9630e453593389ad0d1377df967693a4fa5db2",
-  "sdk_candidate_tree": "29ae2a72a04483ab01059f0da97f9c631df8f3d9",
-  "sdk_candidate_patch_sha256": "fdc31614cb350b20d9896a461537bc4869755cb29313c5f7d99eb62918b109e4",
-  "services": "Stopped after commitment checks; local chain database retained"
+  "sdk_candidate_tree": "274dc4a707b5f52ed945c3575b4e3bf28d9a76d5",
+  "sdk_candidate_patch_sha256": "8f4b1d02da9b8cf5269d1375b59892fafad90f8eee44672b0aa63b4b6de54d1d",
+  "services": "Stopped after commitment checks; local chain database retained",
+  "sdk_commit": "2b227ff2396e530074e7387e513fb36da17bcc96",
+  "sdk_pr": "https://github.com/sporeprotocol/spore-sdk/pull/142",
+  "prior_acceptance": {
+    "sdk_tree": "29ae2a72a04483ab01059f0da97f9c631df8f3d9",
+    "capture": {
+      "sdk-transactions-run2.jsonl": {
+        "bytes": 54450163,
+        "sha256": "31bfedecf99f0ce51389575a16e4ed66faab3f6bcd652759b632b591aa8d99a7"
+      },
+      "sdk-transactions-run2.jsonl.xz": {
+        "bytes": 1347724,
+        "sha256": "d2c1034591a062740d4605d179cfc0693f436392fd4bfe7ff194bf2aa42d417f"
+      }
+    }
+  }
 }

@@ -7,10 +7,9 @@ are needed for the tested SDK flows.
 
 The SDK adaptation is reviewed separately in
 [spore-sdk#142](https://github.com/sporeprotocol/spore-sdk/pull/142), submitted as
-[`f6d030b`](https://github.com/a19q3/spore-sdk/commit/f6d030b8db8b0f441650049818cf1d32a2bb5863).
-Its SDK implementation and TypeScript test sources are unchanged from the
-verified candidate below; submission additionally updates review wording and
-adds a Changeset release note. These results are local interoperability
+[`2b227ff`](https://github.com/a19q3/spore-sdk/commit/2b227ff2396e530074e7387e513fb36da17bcc96).
+The current evidence reruns the refined SDK source, including compatibility and
+Witness-layout fixes, against the same contract binaries. These results are local interoperability
 evidence, not upstream acceptance or release readiness. No SDK package has been
 published by this work.
 
@@ -20,11 +19,11 @@ published by this work.
 | --- | --- |
 | Contract source / deployed v3 binary source | `46eaa8b59abe818f27dcfe3c7af0da46698c12f8` |
 | SDK base | `5e5d886e49bfbd78253e9c14fd8baebccb488a81` (`beta`) |
-| SDK candidate tree | `29ae2a72a04483ab01059f0da97f9c631df8f3d9` |
-| SDK candidate patch SHA-256 | `fdc31614cb350b20d9896a461537bc4869755cb29313c5f7d99eb62918b109e4` |
+| SDK candidate tree | `274dc4a707b5f52ed945c3575b4e3bf28d9a76d5` |
+| SDK candidate patch SHA-256 | `8f4b1d02da9b8cf5269d1375b59892fafad90f8eee44672b0aa63b4b6de54d1d` |
 | Historical contract source for local deployments | `9a6010e43ffd09ac9e6fe7ee389cc915e3e4f999` |
 | Node | CKB `0.200.0` (`52c2be1`, official release), built-in indexer, Dummy mining |
-| SDK tooling | Node `22.23.1`, Lumos `0.24.0-next.1`, Vitest `1.4.0`, TypeScript `5.3.2` |
+| SDK tooling | Node `18.20.8` / `22.23.1`, Lumos `0.24.0-next.1`, Vitest `1.4.0`, TypeScript `5.3.2` |
 | Contract build | Rust `1.92.0`, Clang `22.1.8`, ordered release build |
 
 The temporary node listened on loopback only. A new local genesis funded public
@@ -39,8 +38,8 @@ stopped after receipt checks; local records were retained.
 
 | Check | Result |
 | --- | --- |
-| SDK interoperability offline suite | 12 passed, core build and isolated typecheck passed |
-| Existing SDK SporeConfig tests | 5 passed |
+| SDK offline suite on Node 18 and 22 | 56 passed on each: 31 interop + 25 existing core; types/build/CommonJS passed |
+| Core files included above | SporeConfig 5, Codec 11, ContentType 9 |
 | Real local devnet acceptance | 1 sequential suite passed, 23 transaction cases |
 | Rust CKB-VM replay of captured SDK bytes | 1 test passed, all 23 cases matched |
 
@@ -85,7 +84,7 @@ The raw JSONL is 54,450,163 bytes; compression removes repeated resolved code
 cells without altering any decoded bytes. Its SHA-256 is:
 
 ```text
-31bfedecf99f0ce51389575a16e4ed66faab3f6bcd652759b632b591aa8d99a7
+2e26ed08f9169ead5dca06bd97c9a63b0f81251eb1e631995b4494950fd6f853
 ```
 
 [`acceptance-results.json`](../tests/fixtures/sdk-interop/acceptance-results.json)
@@ -102,7 +101,7 @@ python3 - <<'PY'
 import hashlib, lzma
 from pathlib import Path
 data = lzma.decompress(Path('tests/fixtures/sdk-interop/transactions.jsonl.xz').read_bytes())
-assert hashlib.sha256(data).hexdigest() == '31bfedecf99f0ce51389575a16e4ed66faab3f6bcd652759b632b591aa8d99a7'
+assert hashlib.sha256(data).hexdigest() == '2e26ed08f9169ead5dca06bd97c9a63b0f81251eb1e631995b4494950fd6f853'
 Path('.tmp/sdk-transactions.jsonl').write_bytes(data)
 PY
 SPORE_V3_VM_CAPTURE="$PWD/.tmp/sdk-transactions.jsonl" \
@@ -129,3 +128,22 @@ permission policy. JoyID, CCC and hardware-wallet integration were not run.
 Maintainer review, SDK release version/defaults, release CI and any public
 network deployment remain separate work. Passing #75/#76's contract review is
 not, by itself, approval to release the full client/contract stack.
+
+## Refinement checks
+
+The latest SDK adds indexed diagnostics for missing, misplaced and malformed
+Witness layouts without rewriting them. Full-identity lookups retain category
+metadata and detached results; tag sorting no longer mutates caller state.
+Deployment output indices are bounded to canonical uint32 values. Configuration
+validation is explicitly not proof of source/binary provenance.
+
+Legacy batch Actions are preserved unless `cobuild:false` explicitly opts out.
+The testnet/mainnet dotbit presets retain previous Action and dynamic dependency
+behavior in SDK-level regressions; this is not an on-chain dotbit audit or a
+claim about what an upgradeable deployment currently parses.
+
+The test runner now installs into a disposable workspace and preserves absent,
+existing-directory and existing-symlink root dependency states. Cancellation
+cleanup was exercised. A new unprivileged GitHub Actions job runs the same
+Node 18/22 offline checks; its remote result still requires normal workflow
+approval. Local node/miner services were stopped after the final receipt checks.
