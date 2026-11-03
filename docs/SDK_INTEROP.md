@@ -5,8 +5,14 @@ only a replay test, a recorded transaction fixture and this report. No contract
 consensus source, cell schema, package version or deployed public preset changes
 are needed for the tested SDK flows.
 
-The SDK adaptation remains a separate, local PR candidate. These results are
-local interoperability evidence, not upstream acceptance or release readiness.
+The SDK adaptation is reviewed separately in
+[spore-sdk#142](https://github.com/sporeprotocol/spore-sdk/pull/142), submitted as
+[`f6d030b`](https://github.com/a19q3/spore-sdk/commit/f6d030b8db8b0f441650049818cf1d32a2bb5863).
+Its SDK implementation and TypeScript test sources are unchanged from the
+verified candidate below; submission additionally updates review wording and
+adds a Changeset release note. These results are local interoperability
+evidence, not upstream acceptance or release readiness. No SDK package has been
+published by this work.
 
 ## Exact revisions and environment
 
