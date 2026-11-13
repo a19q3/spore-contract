@@ -1,3 +1,5 @@
+> Type-bound candidate update: see [code identity, governance and build plans](./TYPE_BINDING.md). Historical validation below is revision-specific.
+
 # Spore v3 integration candidate
 
 This branch combines [#75](https://github.com/sporeprotocol/spore-contract/pull/75)
@@ -52,6 +54,7 @@ on this tree to measure its own build.
 ```sh
 git fetch https://github.com/a19q3/spore-contract.git codex/spore-v3-integration
 git switch --detach FETCH_HEAD
+export SPORE_DEPLOYMENT_MANIFEST=deployment/type-ids.fixture.toml
 # The repository pins Rust 1.92.0.
 rustup target add riscv64imac-unknown-none-elf
 SPORE_BUILD_RUNNER=cargo \

@@ -87,6 +87,7 @@ pub enum Error {
     Unknown,
 
     // Native Mutant errors; preserve all existing error numbers above.
+    // Keep the historical name/number; v3 now requires Type code binding on Meepo.
     NativeMutantRequiresVm2 = 90,
     InvalidNativeMutantCode,
     NativeMutantSpawnFailed,
