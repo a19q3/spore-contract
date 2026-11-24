@@ -93,6 +93,7 @@ pub enum Error {
     NativeMutantSpawnFailed,
     NativeMutantRejected,
     ExtensionPaymentOverflow,
+    LegacyClusterMutant,
 }
 
 impl From<SysError> for Error {

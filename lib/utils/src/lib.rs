@@ -200,6 +200,20 @@ pub fn matches_code_identity(
     }
 }
 
+/// Historical Cluster deployments use data1. V3 Clusters use their code Type ID.
+pub fn matches_cluster_identity(
+    script: &Script,
+    data1_hashes: &[[u8; 32]],
+    type_hashes: &[[u8; 32]],
+) -> bool {
+    let hash: [u8; 32] = script.code_hash().unpack();
+    match u8::from(script.hash_type()) {
+        1 => type_hashes.contains(&hash),
+        2 => data1_hashes.contains(&hash),
+        _ => false,
+    }
+}
+
 pub fn find_position_by_type_args_matching(
     args: &[u8],
     source: Source,

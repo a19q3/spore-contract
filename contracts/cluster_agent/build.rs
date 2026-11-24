@@ -11,7 +11,7 @@ fn main() {
     );
     content += &concat_code_hashes(
         "CLUSTER_PROXY_TYPE_HASHES",
-        &[deployment.type_hash("cluster_proxy")],
+        deployment.optional_type_hash("cluster_proxy").as_slice(),
     );
     fs::write(
         std::path::PathBuf::from(env::var("OUT_DIR").unwrap()).join("hash.rs"),

@@ -1,4 +1,5 @@
 mod cluster;
+mod legacy_cluster;
 mod cobuild_decoupling;
 mod mutant_rust;
 mod spore;

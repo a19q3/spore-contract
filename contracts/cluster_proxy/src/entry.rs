@@ -15,7 +15,7 @@ use spore_utils::{
 };
 
 fn is_valid_cluster_cell(script: &Script) -> bool {
-    spore_utils::matches_code_identity(
+    spore_utils::matches_cluster_identity(
         script,
         &crate::hash::CLUSTER_CODE_HASHES,
         &crate::hash::CLUSTER_TYPE_HASHES,

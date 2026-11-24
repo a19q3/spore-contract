@@ -29,13 +29,15 @@ impl Deployment {
             !deployment.profile.is_empty(),
             "deployment profile is required"
         );
-        assert_eq!(
-            deployment.type_ids.len(),
-            ROLES.len(),
-            "all five code roles are required"
-        );
+        for role in ["spore", "cluster", "mutant"] {
+            assert!(
+                deployment.type_ids.contains_key(role),
+                "missing {role} Type ID"
+            );
+        }
         let mut seen = std::collections::BTreeSet::new();
-        for role in ROLES {
+        for role in deployment.type_ids.keys() {
+            assert!(ROLES.contains(&role.as_str()), "unknown code role {role}");
             let id = deployment.args(role);
             assert!(seen.insert(id), "code roles must have distinct Type IDs");
         }
@@ -66,6 +68,12 @@ impl Deployment {
         let mut bytes = [0u8; 32];
         faster_hex::hex_decode(value.as_bytes(), &mut bytes).expect("invalid code Type ID hex");
         bytes
+    }
+
+    pub fn optional_type_hash(&self, role: &str) -> Option<[u8; 32]> {
+        self.type_ids
+            .contains_key(role)
+            .then(|| self.type_hash(role))
     }
 
     pub fn type_hash(&self, role: &str) -> [u8; 32] {
@@ -104,6 +112,22 @@ mod tests {
         )
         .unwrap();
         assert_eq!(deployment.type_hash("spore"), expected);
+    }
+
+    #[test]
+    fn deferred_roles_have_no_authorized_type_hash() {
+        let staged = FIXTURE
+            .lines()
+            .filter(|line| !line.starts_with("cluster_"))
+            .collect::<Vec<_>>()
+            .join("\n");
+        let plan = Deployment::parse(&staged);
+        assert_eq!(plan.optional_type_hash("cluster_proxy"), None);
+        assert_eq!(plan.optional_type_hash("cluster_agent"), None);
+        assert_eq!(
+            plan.type_hash("mutant"),
+            Deployment::parse(FIXTURE).type_hash("mutant")
+        );
     }
 
     #[test]

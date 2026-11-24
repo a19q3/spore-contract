@@ -29,7 +29,7 @@ enum Operation {
 }
 
 fn check_cluster_code_hash(script: &Script) -> bool {
-    spore_utils::matches_code_identity(
+    spore_utils::matches_cluster_identity(
         script,
         &CLUSTER_CODE_HASHES,
         &crate::hash::CLUSTER_TYPE_HASHES,
@@ -111,8 +111,14 @@ fn process_creation(index: usize) -> Result<(), Error> {
         let raw_cluster_data = load_cell_data(cell_dep_index, CellDep)?;
         let cluster_data = compatible_load_cluster_data(&raw_cluster_data)?;
 
-        // check in Mutant mode
+        let cluster_type =
+            load_cell_type(cell_dep_index, CellDep)?.ok_or(Error::ClusterCellNotInDep)?;
+
+        // A historical rule ID names a Lua rule in the old deployment.
         if let Some(mutant_id) = cluster_data.mutant_id().to_opt() {
+            if cluster_type.hash_type() != spore_mutant::TYPE_CODE_HASH_TYPE.into() {
+                return Err(Error::LegacyClusterMutant);
+            }
             let mutant_verify_passed = mime
                 .mutants
                 .iter()
@@ -124,12 +130,8 @@ fn process_creation(index: usize) -> Result<(), Error> {
         }
 
         // Condition 1: Check if cluster exists in Inputs & Outputs
-        let cluster_cell_in_input =
-            find_position_by_type_args_matching(&cluster_id, Input, check_cluster_code_hash)
-                .is_some();
-        let cluster_cell_in_output =
-            find_position_by_type_args_matching(&cluster_id, Output, check_cluster_code_hash)
-                .is_some();
+        let cluster_cell_in_input = find_position_by_type(&cluster_type, Input).is_some();
+        let cluster_cell_in_output = find_position_by_type(&cluster_type, Output).is_some();
 
         // Condition 2: Check if cluster agent exists in Inputs & Outputs
         let agent_cell_in_input =

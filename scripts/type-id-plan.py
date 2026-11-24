@@ -13,7 +13,8 @@ if (
     or plan.get("format") != 1
     or not isinstance(plan.get("profile"), str)
     or not plan["profile"]
-    or set(plan.get("type_ids", {})) != roles
+    or not isinstance(plan.get("type_ids"), dict)
+    or not {"spore", "cluster", "mutant"} <= set(plan["type_ids"]) <= roles
 ):
     raise SystemExit("invalid code Type ID plan")
 values = list(plan["type_ids"].values())
@@ -23,3 +24,4 @@ ids = [bytes.fromhex(value.removeprefix("0x")) for value in values]
 if len(set(ids)) != len(ids):
     raise SystemExit("code Type IDs must be distinct")
 pathlib.Path(sys.argv[2]).write_text(json.dumps(plan, sort_keys=True, indent=2) + "\n")
+print(" ".join(role for role in ("cluster_proxy", "cluster_agent") if role in plan["type_ids"]))

@@ -13,7 +13,7 @@ fn main() {
     );
     content += &concat_code_hashes(
         "CLUSTER_AGENT_TYPE_HASHES",
-        &[deployment.type_hash("cluster_agent")],
+        deployment.optional_type_hash("cluster_agent").as_slice(),
     );
     content += &concat_code_hashes("RUST_MUTANT_TYPE_HASHES", &[deployment.type_hash("mutant")]);
     fs::write(

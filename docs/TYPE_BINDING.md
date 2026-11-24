@@ -48,8 +48,13 @@ cell formats and CoBuild responsibilities are unchanged by this binding work.
 ## Explicit deployment plan
 
 Set `SPORE_DEPLOYMENT_MANIFEST` to a TOML plan with format 1, a profile label,
-and five distinct 32-byte standard Type ID arguments under `[type_ids]`:
-`spore`, `cluster`, `cluster_proxy`, `cluster_agent`, `mutant`.
+and distinct 32-byte standard Type ID arguments under `[type_ids]`.
+The initial native profile includes `spore`, `cluster` and `mutant`. Omit
+`cluster_proxy` and `cluster_agent` while their deployment is deferred.
+The build stages a role only when its ID is configured and leaves deferred V3
+roles out of the compiled allowlists. Enabling them later requires a reviewed
+plan with their actual IDs and a compatible code update. The full five-role
+fixture continues to exercise their contract logic in local VM tests.
 The mutant role means the native lifecycle code in #75/combined builds; #76's
 standalone intermediate tree still uses its legacy lifecycle and executor.
 No standalone #76 artifact is advertised as the complete native v3 release.
@@ -66,8 +71,10 @@ must not silently allocate a new identity.
 Build-time cross-contract allowlists separate type hashes from historical
 frozen data hashes, and check both the hash and its interpretation. Governance
 can update code under an allowed identity; adding an entirely different code
-Type ID still requires a reviewed allowlist change. Existing historical
-whitelists are retained, not broadened to every old Collection.
+Type ID still requires a reviewed allowlist change. Historical Cluster entries bind the deployment data hash and the exact
+`data1` mode. The V3 Spore accepts ordinary Cluster data under those entries.
+A populated historical Mutant field rejects V3 issuance with error 95. The
+original Cluster still transfers under its original contract and witness rules.
 
 `deployment/type-ids.fixture.toml` is **test-only**. Its IDs are not public
 mainnet/testnet records. Builds require an explicit plan; CI explicitly selects
@@ -114,3 +121,29 @@ been relabelled as type-bound acceptance. Local builds used direct Cargo with
 a RISC-V Clang adapter, Rust 1.92.0 for native trees and 1.74.0 for standalone
 #76. Docker/Cross, live deployment and fresh CCC signed devnet/replay acceptance
 were not run for these artifacts.
+
+
+## Reproduce the CCC Type ID acceptance run
+
+Build Core and Spore in the CCC candidate checkout with its locked pnpm
+dependencies. From this contract checkout, supply the CCC directory and a
+Meepo-capable CKB executable with the Indexer and IntegrationTest modules.
+
+```sh
+python3 tests/ccc-devnet/run.py --ccc /path/to/ccc --ckb /path/to/ckb
+```
+
+The runner uses a fresh dev genesis and a test signing key, derives code Type
+IDs from its actual funding input and output indices, and builds the native
+contracts against that plan. Its deployment transaction also includes the
+historical testnet V2 Cluster ELF for mixed-version tests. The run directory
+under `tests/target` contains the plan, signed transactions, resolved Cells,
+block receipts, executable hashes, cycle estimates and exact-byte replay
+checksum. The node exits after verification.
+
+The offline `legacy_cluster` tests load the code and asset data from historical
+public transactions recorded under `tests/fixtures/legacy-cluster`. They use
+a local test owner to exercise Cluster transfers. The ruled-Cluster case adds
+a synthetic rule reference to the historical data. Set
+`SPORE_TEST_CLUSTER_NETWORK=testnet` or `mainnet` to select the fixture for
+the matching contract build.
