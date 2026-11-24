@@ -52,7 +52,7 @@ on this tree to measure its own build.
 ## Reproduce the combined verification
 
 ```sh
-git fetch https://github.com/a19q3/spore-contract.git codex/spore-v3-integration
+git fetch https://github.com/a19q3/spore-contract.git feat/spore-v3-integration
 git switch --detach FETCH_HEAD
 export SPORE_DEPLOYMENT_MANIFEST=deployment/type-ids.fixture.toml
 # The repository pins Rust 1.92.0.
