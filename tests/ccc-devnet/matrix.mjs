@@ -401,6 +401,16 @@ const ruleCell = await spore.findMutant(client, rule.id, [
   profile.mutant.scriptInfo,
 ]);
 assert.ok(ruleCell);
+await send(
+  "V3 Cluster mint with native rule",
+  spore.createSporeCluster({
+    signer,
+    tx: await empty(),
+    scriptInfo: profile.cluster.scriptInfo,
+    data: { name: "native rule", description: "", mutantId: rule.id },
+    withIntent: false,
+  }),
+);
 const native = await mint({
   data: {
     ...data,
