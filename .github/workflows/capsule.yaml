@@ -59,6 +59,10 @@ jobs:
       - name: Cluster Agent identity tests
         run: cargo test --locked -p cluster_agent
 
+      - name: Legacy deployment network test
+        if: matrix.target == 'debug'
+        run: python3 deployment/test-verify-chain.py
+
       - name: Native invocation ABI tests
         run: cargo test --locked -p spore-mutant --lib
 
