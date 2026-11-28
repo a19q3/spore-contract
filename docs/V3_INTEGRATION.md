@@ -68,7 +68,8 @@ CAPSULE_TEST_ENV=release cargo test --locked --manifest-path tests/Cargo.toml \
 
 The local adapter requires a RISC-V-capable Clang; Cross is the default runner
 when `SPORE_BUILD_RUNNER` is not set. Repeat the build/test with no release flags
-for debug, and with `--release --features release_export` for mainnet. Changing
+for debug, and with `--release --features release_export` for mainnet. The VM
+suite selects historical fixtures from the staged network. Changing
 configuration must regenerate dependency hash pins; the local matrix also
 switches back to debug to check that path.
 

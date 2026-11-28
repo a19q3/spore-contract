@@ -19,18 +19,16 @@ struct HistoricalCluster {
 }
 
 fn historical_cluster(context: &mut Context) -> HistoricalCluster {
-    // The mainnet binary was also deployed on testnet in January 2024.
-    let (elf, record): (&[u8], &str) = match std::env::var("SPORE_TEST_CLUSTER_NETWORK").as_deref()
-    {
-        Ok("testnet") => (
+    let (elf, record): (&[u8], &str) = if crate::Loader::default().is_testnet() {
+        (
             include_bytes!("../../fixtures/legacy-cluster/testnet/cluster.bin"),
             include_str!("../../fixtures/legacy-cluster/testnet/cell.json"),
-        ),
-        Ok("mainnet") | Err(_) => (
+        )
+    } else {
+        (
             include_bytes!("../../fixtures/legacy-cluster/mainnet/cluster.bin"),
             include_str!("../../fixtures/legacy-cluster/mainnet/cell.json"),
-        ),
-        Ok(other) => panic!("unknown fixture network {other}"),
+        )
     };
     let cell: serde_json::Value = serde_json::from_str(record).unwrap();
     let field = |v: &serde_json::Value| {

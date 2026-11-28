@@ -94,7 +94,10 @@ cargo test --locked --manifest-path tests/Cargo.toml
 ```
 
 Use `--release` and then `--release --features release_export` with the matching
-`CAPSULE_TEST_ENV=release` to qualify each configuration. For actual deployment,
+`CAPSULE_TEST_ENV=release` to qualify each configuration. The VM suite selects
+historical fixtures using the network recorded by the build script. The testnet
+allowlist includes the published v0.2.2-beta.2 Cluster, Proxy and Agent data1
+identities. For actual deployment,
 use the real reviewed plan rather than the fixture. This change deploys no
 contracts and establishes no public governance policy.
 
@@ -146,6 +149,4 @@ checksum. The node exits after verification.
 The offline `legacy_cluster` tests load the code and asset data from historical
 public transactions recorded under `tests/fixtures/legacy-cluster`. They use
 a local test owner to exercise Cluster transfers. The ruled-Cluster case adds
-a synthetic rule reference to the historical data. Set
-`SPORE_TEST_CLUSTER_NETWORK=testnet` or `mainnet` to select the fixture for
-the matching contract build.
+a synthetic rule reference to the historical data.
